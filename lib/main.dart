@@ -61,6 +61,12 @@ class _MiAplicacionState extends State<MiAplicacion> {
     });
   }
 
+  void eliminarActividad(Actividad actividad){
+    setState((){
+      actividades.remove(actividad);
+    });
+  }
+
   // Función asíncrona para ir al formulario y recoger la nueva Actividad
   Future<void> _irAFormulario() async {
     final nuevaActividad = await Navigator.push<Actividad>(
@@ -162,7 +168,17 @@ class _MiAplicacionState extends State<MiAplicacion> {
 
               // Mostramos las tarjetas individualmente usando map()
               ...actividades.map((actividad) {
-                return crearTarjeta(actividad);
+                return Row(
+                  children: [
+                  Expanded(child: crearTarjeta(actividad)), 
+                  IconButton(
+                    onPressed:(){
+                       eliminarActividad(actividad);
+                    }, 
+                    tooltip: 'Eliminar actividad',
+                    icon: const Icon(Icons.delete)),
+                  ],
+                );
               }),
             ],
           ),
@@ -171,6 +187,8 @@ class _MiAplicacionState extends State<MiAplicacion> {
     );
   }
 }
+
+
 
 // Función que construye una tarjeta
 Widget crearTarjeta(Actividad actividad) {
